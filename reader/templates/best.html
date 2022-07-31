@@ -1,9 +1,8 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
     <div class="container mx-auto mt-4">
-  <div class="row justify-content-center">
+  <div class="d-flex justify-content-center">
 
 {% for book in books.items %}
 
@@ -13,14 +12,14 @@
     <span><h4>{{ book.genre }}</h4></span>
     <div class="overlay">
       <div class="overlay-content">
-        <a href="{{ url_for('book', book_id=book.id) }}">Подробнее</a>
+        <a href="{{ url_for('book', book_id=book.id)}}">Подробнее</a>
       </div>
     </div>
   </div>
   <div class="card-content">
       <h2>{{ book.title }}</h2>
-      <h2>
-          {% for n in range(book.rating | int) %}
+      <h2>{% set stars = book.rating | int %}
+          {% for n in range(stars) %}
           <span class="fa fa-star checked" style="color:orange"></span>
           {% endfor %}
        </h2>
@@ -38,17 +37,15 @@
 {% endfor %}
   </div>
    </div>
-
-   {% for page_num in books.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
-   {% if page_num %}
-     {% if books.page == page_num %}
-       <a class="btn btn-info mb-4" href="{{ url_for('index', page=page_num) }}">{{ page_num }}</a>
-     {% else %}
-       <a class="btn btn-outline-info mb-4" href="{{ url_for('index', page=page_num) }}">{{ page_num }}</a>
-     {% endif %}
-   {% else %}
-     ...
-   {% endif %}
- {% endfor %}
-
+    {% for page_num in books.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+      {% if page_num %}
+        {% if books.page == page_num %}
+          <a class="btn btn-info mb-4" href="{{ url_for('best', page=page_num) }}">{{ page_num }}</a>
+        {% else %}
+          <a class="btn btn-outline-info mb-4" href="{{ url_for('best', page=page_num) }}">{{ page_num }}</a>
+        {% endif %}
+      {% else %}
+        ...
+      {% endif %}
+    {% endfor %}
 {% endblock %}

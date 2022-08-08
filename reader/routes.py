@@ -5,7 +5,6 @@ import secrets
 from flask import (
     Blueprint,
     flash,
-    jsonify,
     redirect,
     render_template,
     request,
@@ -16,22 +15,21 @@ from PIL import Image
 from sqlalchemy.exc import IntegrityError
 
 from reader import db
+from reader.config import get_config
 from reader.forms import BookForm, UpdateBookForm
 from reader.models import Book
 
 blueprint = Blueprint("book_blueprint", __name__, url_prefix="")
+config = get_config()
 
 # TODO: move to helpers.py
 def save_picture(cover):
     """Save picture to upload folder folder and
     give it a random name."""
-
-    from run import app
-
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(cover.filename)
     picture_fn = random_hex + f_ext
-    picture_path = os.path.join(app.root_path, app.config["UPLOAD_FOLDER"], picture_fn)
+    picture_path = os.path.join(config.APP_BASE_DIR, config.UPLOAD_FOLDER, picture_fn)
     output_size = (220, 240)
     image = Image.open(cover)
     image.thumbnail(output_size)
@@ -48,9 +46,7 @@ def index():
 
 @blueprint.route("/uploads/<filename>")
 def send_file(filename):
-    from run import app
-
-    return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
+    return send_from_directory(config.UPLOAD_FOLDER, filename)
 
 
 @blueprint.route("/create/", methods=("GET", "POST"))

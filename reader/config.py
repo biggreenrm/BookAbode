@@ -8,6 +8,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config:
+    APP_BASE_DIR = basedir
     DEBUG = os.getenv("DEBUG", False)
     SQLALCHEMY_DATABASE_URI = os.getenv(
         "SQLALCHEMY_DATABASE_URI",
@@ -16,3 +17,7 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = os.getenv("SQLALCHEMY_TRACK_MODIFICATIONS", False)
     SECRET_KEY = os.getenv("SECRET_KEY", "hard to guess string")
     UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER", "uploads")
+
+
+def get_config():
+    return Config()

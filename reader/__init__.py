@@ -5,18 +5,15 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-app = Flask(__name__)
 
-# Config
-UPLOAD_FOLDER = "uploads"
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(
-    basedir, "database.db"
-)
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True  # possibly disable
-app.config["SECRET_KEY"] = "hard to guess string"
-app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+db = SQLAlchemy()
 
-# Database
-db = SQLAlchemy(app)
 
-from reader import models, routes
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object("reader.config.Config")
+    db.init_app(app)
+    from reader.routes import blueprint
+
+    app.register_blueprint(blueprint)
+    return app

@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  app:
+    container_name: bookabode
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8000:5000"

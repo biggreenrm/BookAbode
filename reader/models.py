@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
 
-from reader import db
+db = SQLAlchemy()
 
 
 class Book(db.Model):

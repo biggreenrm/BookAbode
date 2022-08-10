@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from flask import Flask
 
-from reader.models import db
+from reader.fixtures import add_default_books
+from reader.models import Book, db
+from reader.routes import blueprint as book_blueprint
 
 
 def create_app():
@@ -11,7 +13,8 @@ def create_app():
     db.init_app(app)
     db.create_all()
     db.session.commit()
-    from reader.routes import blueprint
-
-    app.register_blueprint(blueprint)
+    books = Book.query.all()
+    if not books:
+        add_default_books()
+    app.register_blueprint(book_blueprint)
     return app

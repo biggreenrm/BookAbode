@@ -8,6 +8,8 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config:
+    TESTING = False
+    CSRF_ENABLED = True
     APP_BASE_DIR = basedir
     DEBUG = os.getenv("DEBUG", False)
     POSTGRES_USER = os.getenv("POSTGRES_USER")
@@ -19,6 +21,24 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = os.getenv("SQLALCHEMY_TRACK_MODIFICATIONS", False)
     SECRET_KEY = os.getenv("SECRET_KEY", "hard to guess string")
     UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER", "uploads")
+
+
+class ProductionConfig(Config):
+    DEBUG = False
+
+
+class StagingConfig(Config):
+    DEVELOPMENT = True
+    DEBUG = True
+
+
+class DevelopmentConfig(Config):
+    DEVELOPMENT = True
+    DEBUG = True
+
+
+class TestingConfig(Config):
+    TESTING = True
 
 
 def get_config():

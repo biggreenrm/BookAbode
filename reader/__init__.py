@@ -8,7 +8,7 @@ from reader.routes import blueprint as book_blueprint
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object("reader.config.Config")
+    app.config.from_object("reader.config.DevelopmentConfig")
     app.app_context().push()
     db.init_app(app)
     db.create_all()

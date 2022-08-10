@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import os
+
 from flask import Flask
 from flask_migrate import Migrate
 
@@ -11,6 +13,12 @@ def create_app():
     app.config.from_object("reader.config.DevelopmentConfig")
     app.app_context().push()
     db.init_app(app)
-    Migrate(app, db)
+    Migrate(
+        app,
+        db,
+        directory=os.path.abspath(
+            os.path.join(os.path.dirname(__file__), "migrations")
+        ),
+    )
     app.register_blueprint(book_blueprint)
     return app
